@@ -1,4 +1,5 @@
 import csv
+import os
 
 from selenium import webdriver
 import time
@@ -9,8 +10,8 @@ from initLoad import initial_load
 class AtomicParser:
 
     def __init__(self, domain: str = ""):
-        self.options = webdriver.EdgeOptions()
-        self.driver = webdriver.Edge(options=self.options)
+        self.options = webdriver.ChromeOptions()
+        self.driver = webdriver.Chrome(options=self.options)
         self.domain = domain if domain else "https://pris.iaea.org"
 
     def get_page(self, suffix: str) -> str:
@@ -43,7 +44,7 @@ class AtomicParser:
                 cells = row.find_all('td')
                 status = cells[2].get_text(strip=True)
 
-                if status in {'Operational', 'Permanent shutdown', 'Suspended Operation'}:
+                if status in {'Operational', 'Permanent Shutdown', 'Suspended Operation'}:
                     reactor_link = cells[0].find('a')['href']
 
                     js_reactors.append(reactor_link)
@@ -114,7 +115,11 @@ class AtomicParser:
 
     @staticmethod
     def write_reactor(reactor, filename) -> None:
-        with open(filename, 'a', newline='') as file:
+        out_folder = os.path.dirname(filename)
+        if not os.path.exists(out_folder):
+            os.makedirs(out_folder)
+
+        with open(filename, 'a', newline='', encoding='utf-8') as file:
             writer = csv.writer(file, delimiter=';')
             writer.writerow([
                 reactor["country"],
@@ -131,7 +136,11 @@ class AtomicParser:
 
     @staticmethod
     def write_load_factor(reactor_name, load_factor, filename) -> None:
-        with open(filename, 'a', newline='') as file:
+        out_folder = os.path.dirname(filename)
+        if not os.path.exists(out_folder):
+            os.makedirs(out_folder)
+
+        with open(filename, 'a', newline='', encoding='utf-8') as file:
             writer = csv.writer(file, delimiter=';')
             for year, factor in load_factor.items():
                 writer.writerow([reactor_name, year, factor])

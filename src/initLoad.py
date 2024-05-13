@@ -13,5 +13,9 @@ initial_load = {
     "CANDU": 38.9,
     "PHWR": 38.9,
     "KLT_40": 0.007,
-    "PWR_TEST": 79.84
+    "PWR_TEST": 79.84,
+    "LWGR": 15,
+    "GCR": 15,
+    "FBR": 30,
+    "HTGR": 10,
 }
