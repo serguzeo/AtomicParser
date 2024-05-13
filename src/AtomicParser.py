@@ -76,8 +76,10 @@ class AtomicParser:
             table = soup.find('table', class_='active')
             self.set_load_factor(reactor, table)
 
-            self.write_reactor(reactor, filename="../out/reactors.csv")
-            self.write_load_factor(reactor["name"], reactor["loadFactor"], filename="../out/loadFactors.csv")
+            if sum(reactor["loadFactor"].values()) != 0:
+                self.write_reactor(reactor, filename="../out/reactors.csv")
+                self.write_load_factor(reactor["name"], reactor["loadFactor"], filename="../out/loadFactors.csv")
+
             self.driver.back()
 
         return js_reactors
