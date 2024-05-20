@@ -107,7 +107,7 @@ class AtomicParser:
                 if sd and year > sd or psd and year > psd:
                     break
 
-                load_factor_value = float(cells[-2].get_text().strip()) if cells[-2].get_text().strip() else 0
+                load_factor_value = float(cells[-2].get_text().strip()) if cells[-2].get_text().strip() else 85
 
                 if year in reactor["loadFactor"]:
                     reactor["loadFactor"][year] = load_factor_value
